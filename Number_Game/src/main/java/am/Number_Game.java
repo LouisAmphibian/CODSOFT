@@ -8,10 +8,11 @@ package am;
  *
  * @author ayanda.m
  */
-public class Main {
+public class Number_Game{
 
     public static void main(String[] args) {
         
-        System.out.println("Hello World!!");
+        //initilizing my frame
+        new MyFrame();
     }
 }
