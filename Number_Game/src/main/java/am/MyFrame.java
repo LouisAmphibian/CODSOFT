@@ -103,7 +103,8 @@ public class MyFrame extends JFrame implements ActionListener{
         // Action listener for button1
         if (e.getSource() == button1) {
             // Handle button click event
-            System.out.println("Button clicked!");
+             game_speech.setText("<html>Good guess! Now try to guess another number." +
+                    "<br><br><span style='color:green;'>You can do it!</span></html>");
         }
     }
     
