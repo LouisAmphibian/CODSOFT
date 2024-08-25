@@ -14,5 +14,6 @@ public class Number_Game{
         
         //initilizing my frame
         new MyFrame();
+        
     }
 }
