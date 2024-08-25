@@ -4,28 +4,35 @@
  */
 package am;
 
+import javax.swing.*;
+
 import java.io.File;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.FlowLayout;
 /**
  *
  * @author USER
  */
-public class MyFrame extends JFrame {
+public class MyFrame extends JFrame implements ActionListener{
     
     //global
     JFrame frame;
     JPanel panelOne;
     JLabel game_speech;
      String labelText;
+     JButton button1;
     
     //CREATING CONTRUCTOR FOR MY FRAME 
     MyFrame(){
@@ -55,28 +62,47 @@ public class MyFrame extends JFrame {
 */
         //label
         game_speech = new JLabel();
-        //game_speech.setIcon(icon);
         game_speech.setText(labelText);
-         game_speech.setVerticalAlignment(JLabel.TOP);
-        game_speech.setBorder(new EmptyBorder(10,10,10,10)); //Adding marging to the lsbel
-      
-        //The first panel 
+        game_speech.setVerticalAlignment(JLabel.TOP);
+        game_speech.setBorder(new EmptyBorder(10, 10, 10, 10)); // Adding margin to the label
+        game_speech.setBounds(10, 10, 250, 100); // Set bounds for the label
+
+        // Button
+        button1 = new JButton("OK");
+        button1.setBounds(60, 150, 150, 50); // Set specific bounds for button
+        button1.addActionListener(this);
+        button1.setHorizontalTextPosition(JButton.CENTER);
+        button1.setFocusable(false);
+        button1.setBackground(Color.CYAN);
+        button1.setForeground(Color.BLACK);
+        button1.setBorder(BorderFactory.createEtchedBorder());
+
+        // The first panel
         panelOne = new JPanel();
-        panelOne.setBounds(115,100,270,300);
-        panelOne.setLayout(new BorderLayout());        
-        panelOne.setBackground(new Color(192, 192, 192)); 
-        panelOne.add(game_speech,BorderLayout.NORTH);
-        
-        
+        panelOne.setBounds(110, 100, 270, 300);
+        panelOne.setLayout(null); // Use null layout for absolute positioning
+        panelOne.setBackground(new Color(192, 192, 192));
+        panelOne.add(game_speech);
+        panelOne.add(button1);
+
         frame = new JFrame();
-        
+
         frame.setTitle("Number Game");
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
+        frame.setSize(500, 500);
         frame.setLayout(null);
         frame.setVisible(true);
         frame.add(panelOne);
-        
-}
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Action listener for button1
+        if (e.getSource() == button1) {
+            // Handle button click event
+            System.out.println("Button clicked!");
+        }
+    }
+    
 }
