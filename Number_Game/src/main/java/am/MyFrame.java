@@ -69,7 +69,7 @@ public class MyFrame extends JFrame implements ActionListener{
 
         // Button
         button1 = new JButton("OK");
-        button1.setBounds(60, 150, 150, 50); // Set specific bounds for button
+        button1.setBounds(170,370, 150, 50); // Set specific bounds for button
         button1.addActionListener(this);
         button1.setHorizontalTextPosition(JButton.CENTER);
         button1.setFocusable(false);
@@ -79,21 +79,23 @@ public class MyFrame extends JFrame implements ActionListener{
 
         // The first panel
         panelOne = new JPanel();
-        panelOne.setBounds(110, 100, 270, 300);
+        panelOne.setBounds(110, 40, 270, 300);
         panelOne.setLayout(null); // Use null layout for absolute positioning
         panelOne.setBackground(new Color(192, 192, 192));
         panelOne.add(game_speech);
-        panelOne.add(button1);
+        
 
         frame = new JFrame();
-
+        
         frame.setTitle("Number Game");
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
         frame.setLayout(null);
         frame.setVisible(true);
+        frame.add(button1);
         frame.add(panelOne);
+        
     }
 
     @Override
