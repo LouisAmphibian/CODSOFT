@@ -33,6 +33,7 @@ public class MyFrame extends JFrame implements ActionListener{
     JLabel game_speech;
     String labelText;
     JButton startButton, exitButton,submitButton;
+    JTextField userField;
    
     //CREATING CONTRUCTOR FOR MY FRAME 
     MyFrame(){
@@ -89,7 +90,12 @@ public class MyFrame extends JFrame implements ActionListener{
         panelTwo .setBounds(110, 40, 270, 300);
         panelTwo .setLayout(null);
         panelTwo .setBackground(new Color(192, 192, 192));
-         
+        
+        //TextField
+        userField = new CustomTextField("Enter Number"); //cutom text field
+        userField.setBounds(85, 150,100, 40); // Set bounds for the label
+        userField.setFocusable(true);
+       // userField.setHorizontalTextPosition(JButton.CENTER);
 
         frame = new JFrame();
         
@@ -131,7 +137,9 @@ public class MyFrame extends JFrame implements ActionListener{
             submitButton.setBackground(Color.green);
             submitButton.setForeground(Color.white);
             
+            
             panelTwo .add(game_speech);
+            panelTwo.add(userField);
             frame.remove(panelOne);
             frame.remove(startButton);
             frame.add(exitButton);
