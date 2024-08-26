@@ -29,11 +29,11 @@ public class MyFrame extends JFrame implements ActionListener{
     
     //global
     JFrame frame;
-    JPanel panelOne;
+    JPanel panelOne, panelTwo;
     JLabel game_speech;
-     String labelText;
-     JButton button1;
-    
+    String labelText;
+    JButton startButton, exitButton,submitButton;
+   
     //CREATING CONTRUCTOR FOR MY FRAME 
     MyFrame(){
        
@@ -68,14 +68,14 @@ public class MyFrame extends JFrame implements ActionListener{
         game_speech.setBounds(10, 10, 250, 100); // Set bounds for the label
 
         // Button
-        button1 = new JButton("OK");
-        button1.setBounds(170,370, 150, 50); // Set specific bounds for button
-        button1.addActionListener(this);
-        button1.setHorizontalTextPosition(JButton.CENTER);
-        button1.setFocusable(false);
-        button1.setBackground(Color.CYAN);
-        button1.setForeground(Color.BLACK);
-        button1.setBorder(BorderFactory.createEtchedBorder());
+        startButton = new JButton("OK");
+        startButton.setBounds(170,370, 150, 50); // Set specific bounds for button
+        startButton.addActionListener(this);
+        startButton.setHorizontalTextPosition(JButton.CENTER);
+        startButton.setFocusable(false);
+        startButton.setBackground(Color.CYAN);
+        startButton.setForeground(Color.BLACK);
+        startButton.setBorder(BorderFactory.createEtchedBorder());
 
         // The first panel
         panelOne = new JPanel();
@@ -84,6 +84,12 @@ public class MyFrame extends JFrame implements ActionListener{
         panelOne.setBackground(new Color(192, 192, 192));
         panelOne.add(game_speech);
         
+        //Second panel
+        panelTwo = new JPanel();
+        panelTwo .setBounds(110, 40, 270, 300);
+        panelTwo .setLayout(null);
+        panelTwo .setBackground(new Color(192, 192, 192));
+         
 
         frame = new JFrame();
         
@@ -93,7 +99,7 @@ public class MyFrame extends JFrame implements ActionListener{
         frame.setSize(500, 500);
         frame.setLayout(null);
         frame.setVisible(true);
-        frame.add(button1);
+        frame.add(startButton);
         frame.add(panelOne);
         
     }
@@ -101,11 +107,47 @@ public class MyFrame extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         // Action listener for button1
-        if (e.getSource() == button1) {
+        if (e.getSource() == startButton) {
             // Handle button click event
-             game_speech.setText("<html>Good guess! Now try to guess another number." +
-                    "<br><br><span style='color:green;'>You can do it!</span></html>");
+            game_speech.setText("<html> Enter your guess between 1 to 100" +
+                    "<br><br><span style='color:blue;'>You have 6 attempts to guess the number.</span></html>");
+            
+            //Exit Button
+            exitButton = new JButton("Exit");
+            exitButton.addActionListener(this);
+            exitButton.setHorizontalTextPosition(JButton.CENTER);
+            exitButton.setFocusable(false);
+            exitButton.setBounds(90,370, 150, 50);
+            exitButton.setBackground(Color.RED);
+            exitButton.setForeground(Color.white);
+            
+            
+            //Submit Button
+            submitButton = new JButton("Submit");
+            submitButton.addActionListener(this);
+            submitButton.setHorizontalTextPosition(JButton.CENTER);
+            submitButton.setFocusable(false);
+            submitButton.setBounds(250,370, 150, 50);
+            submitButton.setBackground(Color.green);
+            submitButton.setForeground(Color.white);
+            
+            panelTwo .add(game_speech);
+            frame.remove(panelOne);
+            frame.remove(startButton);
+            frame.add(exitButton);
+            frame.add(submitButton);
+            frame.add(panelTwo);
+            frame.revalidate();
+            frame.repaint();
+  
         }
+        else if(e.getSource() ==exitButton ){
+            System.exit(0);
+        }
+        else if(e.getSource() == submitButton){
+            System.out.println("It works");
+        }
+            
     }
     
 }
