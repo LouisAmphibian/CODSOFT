@@ -40,6 +40,7 @@ public class MyFrame extends JFrame implements ActionListener{
        private int score = 0;
        private RandomGenerator randomGenerator; // Declare the RandomGenerator object
        private  int userGuess;
+       String message;
    
     //CREATING CONTRUCTOR FOR MY FRAME 
     MyFrame(){
@@ -75,7 +76,7 @@ public class MyFrame extends JFrame implements ActionListener{
         game_speech.setBounds(10, 10, 250, 100); // Set bounds for the label
 
         // Button
-        startButton = new JButton("OK");
+        startButton = new JButton("Start");
         startButton.setBounds(170,370, 150, 50); // Set specific bounds for button
         startButton.addActionListener(this);
         startButton.setHorizontalTextPosition(JButton.CENTER);
@@ -83,6 +84,28 @@ public class MyFrame extends JFrame implements ActionListener{
         startButton.setBackground(Color.CYAN);
         startButton.setForeground(Color.BLACK);
         startButton.setBorder(BorderFactory.createEtchedBorder());
+        
+         //Exit Button
+            exitButton = new JButton("Exit");
+            exitButton.addActionListener(this);
+            exitButton.setHorizontalTextPosition(JButton.CENTER);
+            exitButton.setFocusable(false);
+            exitButton.setBounds(90,370, 150, 50);
+            exitButton.setBackground(Color.RED);
+            exitButton.setForeground(Color.white);
+            
+            
+            //Submit Button
+            submitButton = new JButton("Submit");
+            submitButton.addActionListener(this);
+            submitButton.setHorizontalTextPosition(JButton.CENTER);
+            submitButton.setFocusable(false);
+            submitButton.setBounds(250,370, 150, 50);
+            submitButton.setBackground(Color.green);
+            submitButton.setForeground(Color.white);
+            
+            
+            
 
         // The first panel
         panelOne = new JPanel();
@@ -105,116 +128,79 @@ public class MyFrame extends JFrame implements ActionListener{
 
         // Initialize RandomGenerator
         randomGenerator = new RandomGenerator(this);
+
+        // Start a new game when the frame is initialized
+        randomGenerator.startNewGame(minNumber, maxNumber, maxAttempts);
         
+          //startButton.addActionListener(this);
+        //submitButton.addActionListener(this);
+        //exitButton.addActionListener(this);
+  
         this.setTitle("Number Game");
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(500, 500);
         this.setLayout(null);
         this.setVisible(true);
+        
         this.add(startButton);
         this.add(panelOne);
+        
+            
         
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Action listener for button1
         if (e.getSource() == startButton) {
+            randomGenerator.startNewGame(minNumber, maxNumber, maxAttempts);
             
-            // Handle button click event
-            game_speech.setText("<html> Enter your guess between " + minNumber + " and"+ maxNumber +
-                    "<br><br><span style='color:blue;'>You have "+ maxAttempts+ " attempts to guess the number.</span>"+
-                    "<br><br><<span style= 'color:red;'><b>SCORE:</b></span> "+score+"</html>");
-            
-            
-            //Exit Button
-            exitButton = new JButton("Exit");
-            exitButton.addActionListener(this);
-            exitButton.setHorizontalTextPosition(JButton.CENTER);
-            exitButton.setFocusable(false);
-            exitButton.setBounds(90,370, 150, 50);
-            exitButton.setBackground(Color.RED);
-            exitButton.setForeground(Color.white);
+        panelTwo.add(game_speech);
+        panelTwo.add(userField);
+        this.remove(panelOne);
+        this.remove(startButton);
+        this.add(exitButton);
+        this.add(submitButton);
+        this.add(panelTwo);
+        this.revalidate();
+        this.repaint();
             
             
-            //Submit Button
-            submitButton = new JButton("Submit");
-            submitButton.addActionListener(this);
-            submitButton.setHorizontalTextPosition(JButton.CENTER);
-            submitButton.setFocusable(false);
-            submitButton.setBounds(250,370, 150, 50);
-            submitButton.setBackground(Color.green);
-            submitButton.setForeground(Color.white);
-            
-            
-            panelTwo.add(game_speech);
-            panelTwo.add(userField);
-            this.remove(panelOne);
-            this.remove(startButton);
-            this.add(exitButton);
-            this.add(submitButton);
-            this.add(panelTwo);
-            this.revalidate();
-            this.repaint();
-  
-        }
-        
-        
-        if(e.getSource() ==exitButton ){
+        } else if (e.getSource() == exitButton) {
             System.exit(0);
-        }
-        else if(e.getSource() == submitButton){ //submit button
-            
-            String userText = userField.getText();
-            
-            //catch errors
-            try{
-                //converting userText to integer
-                userGuess = Integer.parseInt(userText);
-                
-                if( userGuess>= minNumber && userGuess<= maxNumber){
-                    setUserInput(userGuess);
-                    
-                    randomGenerator.generator(minNumber, maxNumber, maxAttempts);
-                }else{
-                     JOptionPane.showMessageDialog(this, 
-                                          "Please enter a valid number between " + minNumber + " and " + maxNumber + ".", 
-                                          "Invalid Input", 
-                                          JOptionPane.ERROR_MESSAGE);
+        } else if (e.getSource() == submitButton) {
+            String userInputStr = userField.getText();
+            try {
+                int userGuess = Integer.parseInt(userInputStr);
+                if (userGuess >= minNumber && userGuess <= maxNumber) {
+                    randomGenerator.processUserGuess(userGuess);
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        "Please enter a valid number between " + minNumber + " and " + maxNumber + ".",
+                        "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
                 }
-        
-            }catch(NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, 
-                                          "Please enter a valid number between " + minNumber + " and " + maxNumber + ".", 
-                                          "Invalid Input", 
-                                          JOptionPane.ERROR_MESSAGE);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this,
+                    "Please enter a valid number.",
+                    "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
             }
-            
         }
-            
     }
-   
-    public int getUserInput(){
-        return userGuess;
+
+    public void setGameSpeech(String message) {
+        game_speech.setText(message);
     }
-    
-    public void setUserInput(int userInput){
-        this.userGuess = userInput;
+
+    public void endGame() {
+        submitButton.setEnabled(false);
+        userField.setEditable(false);
     }
-    
-    
-    
-    
-    //update score
-    public void updateScore(int addScore){
+
+    public void updateScore(int addScore) {
         score += addScore;
-        
-        game_speech.setText("<html> Enter your guess between " + minNumber + " and " + maxNumber +
-                "<br><br><span style='color:blue;'>You have " + maxAttempts + " attempts to guess the number.</span>" +
-                "<br><br><span style='color:red;'><b>SCORE: </b></span>" + score + "</html>");
-        
-        
+        String message = "<html>Your current score is: " + score + "</html>";
+        game_speech.setText(message);
     }
-    
 }
