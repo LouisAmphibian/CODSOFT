@@ -12,7 +12,6 @@ import java.awt.Color;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import java.awt.Image;
-import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,12 +27,19 @@ import java.awt.FlowLayout;
 public class MyFrame extends JFrame implements ActionListener{
     
     //global
-    JFrame frame;
+   
     JPanel panelOne, panelTwo;
     JLabel game_speech;
     String labelText;
     JButton startButton, exitButton,submitButton;
     JTextField userField;
+    
+       private int minNumber = 1;
+       private int maxNumber = 100;
+       private int maxAttempts = 6;
+       private int score = 0;
+       private RandomGenerator randomGenerator; // Declare the RandomGenerator object
+       private  int userGuess;
    
     //CREATING CONTRUCTOR FOR MY FRAME 
     MyFrame(){
@@ -45,8 +51,8 @@ public class MyFrame extends JFrame implements ActionListener{
       // ImageIcon icon = new ImageIcon("thinking.png");
        
         
-         labelText = "<html>I'm thinking of a number between 1 and 100.  " +
-                    "<br><br><span style='color:blue;'>You have 6 attempts to guess the number.</span></html>";
+         labelText = "<html>I'm thinking of a number between " + minNumber + " and"+ maxNumber +
+                    "<br><br><span style='color:blue;'>You have "+ maxAttempts+ " attempts to guess the number.</span></html>";
        /*
         if (imageURL != null) {
             String imageUrlString = imageURL.toString();
@@ -97,16 +103,17 @@ public class MyFrame extends JFrame implements ActionListener{
         userField.setFocusable(true);
        // userField.setHorizontalTextPosition(JButton.CENTER);
 
-        frame = new JFrame();
+        // Initialize RandomGenerator
+        randomGenerator = new RandomGenerator(this);
         
-        frame.setTitle("Number Game");
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
-        frame.setLayout(null);
-        frame.setVisible(true);
-        frame.add(startButton);
-        frame.add(panelOne);
+        this.setTitle("Number Game");
+        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(500, 500);
+        this.setLayout(null);
+        this.setVisible(true);
+        this.add(startButton);
+        this.add(panelOne);
         
     }
 
@@ -114,9 +121,12 @@ public class MyFrame extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // Action listener for button1
         if (e.getSource() == startButton) {
+            
             // Handle button click event
-            game_speech.setText("<html> Enter your guess between 1 to 100" +
-                    "<br><br><span style='color:blue;'>You have 6 attempts to guess the number.</span></html>");
+            game_speech.setText("<html> Enter your guess between " + minNumber + " and"+ maxNumber +
+                    "<br><br><span style='color:blue;'>You have "+ maxAttempts+ " attempts to guess the number.</span>"+
+                    "<br><br><<span style= 'color:red;'><b>SCORE:</b></span> "+score+"</html>");
+            
             
             //Exit Button
             exitButton = new JButton("Exit");
@@ -138,24 +148,73 @@ public class MyFrame extends JFrame implements ActionListener{
             submitButton.setForeground(Color.white);
             
             
-            panelTwo .add(game_speech);
+            panelTwo.add(game_speech);
             panelTwo.add(userField);
-            frame.remove(panelOne);
-            frame.remove(startButton);
-            frame.add(exitButton);
-            frame.add(submitButton);
-            frame.add(panelTwo);
-            frame.revalidate();
-            frame.repaint();
+            this.remove(panelOne);
+            this.remove(startButton);
+            this.add(exitButton);
+            this.add(submitButton);
+            this.add(panelTwo);
+            this.revalidate();
+            this.repaint();
   
         }
-        else if(e.getSource() ==exitButton ){
+        
+        
+        if(e.getSource() ==exitButton ){
             System.exit(0);
         }
-        else if(e.getSource() == submitButton){
-            System.out.println("It works");
+        else if(e.getSource() == submitButton){ //submit button
+            
+            String userText = userField.getText();
+            
+            //catch errors
+            try{
+                //converting userText to integer
+                userGuess = Integer.parseInt(userText);
+                
+                if( userGuess>= minNumber && userGuess<= maxNumber){
+                    setUserInput(userGuess);
+                    
+                    randomGenerator.generator(minNumber, maxNumber, maxAttempts);
+                }else{
+                     JOptionPane.showMessageDialog(this, 
+                                          "Please enter a valid number between " + minNumber + " and " + maxNumber + ".", 
+                                          "Invalid Input", 
+                                          JOptionPane.ERROR_MESSAGE);
+                }
+        
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, 
+                                          "Please enter a valid number between " + minNumber + " and " + maxNumber + ".", 
+                                          "Invalid Input", 
+                                          JOptionPane.ERROR_MESSAGE);
+            }
+            
         }
             
+    }
+   
+    public int getUserInput(){
+        return userGuess;
+    }
+    
+    public void setUserInput(int userInput){
+        this.userGuess = userInput;
+    }
+    
+    
+    
+    
+    //update score
+    public void updateScore(int addScore){
+        score += addScore;
+        
+        game_speech.setText("<html> Enter your guess between " + minNumber + " and " + maxNumber +
+                "<br><br><span style='color:blue;'>You have " + maxAttempts + " attempts to guess the number.</span>" +
+                "<br><br><span style='color:red;'><b>SCORE: </b></span>" + score + "</html>");
+        
+        
     }
     
 }
