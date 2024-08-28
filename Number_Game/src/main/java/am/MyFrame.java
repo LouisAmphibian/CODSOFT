@@ -31,13 +31,15 @@ public class MyFrame extends JFrame implements ActionListener{
     JPanel panelOne, panelTwo;
     JLabel game_speech;
     String labelText;
-    JButton startButton, exitButton,submitButton;
+    JButton startButton, exitButton,submitButton, playAgainButton, continueButton;
     JTextField userField;
     
        private int minNumber = 1;
        private int maxNumber = 100;
        private int maxAttempts = 6;
        private int score = 0;
+       private final int DEFAULT_MAX_ATTEMPTS = 6;
+       private final int DEFAULT_SCORE = 0;
        private RandomGenerator randomGenerator; // Declare the RandomGenerator object
        private  int userGuess;
        String message;
@@ -86,26 +88,41 @@ public class MyFrame extends JFrame implements ActionListener{
         startButton.setBorder(BorderFactory.createEtchedBorder());
         
          //Exit Button
-            exitButton = new JButton("Exit");
-            exitButton.addActionListener(this);
-            exitButton.setHorizontalTextPosition(JButton.CENTER);
-            exitButton.setFocusable(false);
-            exitButton.setBounds(90,370, 150, 50);
-            exitButton.setBackground(Color.RED);
-            exitButton.setForeground(Color.white);
+        exitButton = new JButton("Exit");
+        exitButton.addActionListener(this);
+        exitButton.setHorizontalTextPosition(JButton.CENTER);
+        exitButton.setFocusable(false);
+        exitButton.setBounds(90,370, 150, 50);
+        exitButton.setBackground(Color.RED);
+        exitButton.setForeground(Color.white);
             
             
-            //Submit Button
-            submitButton = new JButton("Submit");
-            submitButton.addActionListener(this);
-            submitButton.setHorizontalTextPosition(JButton.CENTER);
-            submitButton.setFocusable(false);
-            submitButton.setBounds(250,370, 150, 50);
-            submitButton.setBackground(Color.green);
-            submitButton.setForeground(Color.white);
+        //Submit Button
+        submitButton = new JButton("Submit");
+        submitButton.addActionListener(this);
+        submitButton.setHorizontalTextPosition(JButton.CENTER);
+        submitButton.setFocusable(false);
+        submitButton.setBounds(250,370, 150, 50);
+        submitButton.setBackground(Color.green);
+        submitButton.setForeground(Color.white);
             
             
+       //Play Again button
+        playAgainButton = new JButton("Play Again");
+        playAgainButton.setBounds(170,370, 150, 50);
+        playAgainButton.addActionListener(this);
+        playAgainButton.setFocusable(false);
+        playAgainButton.setBackground(Color.ORANGE);
+        playAgainButton.setForeground(Color.BLACK);
+        playAgainButton.setVisible(false); // Initially hidden     
             
+        continueButton = new JButton("Continue");
+        continueButton.setBounds(170, 370, 150 , 50);
+        continueButton.addActionListener(this);
+        continueButton.setFocusable(false);
+        continueButton.setBackground(Color.YELLOW);
+        continueButton.setForeground(Color.BLACK);
+        continueButton.setVisible(false); // Initially hidden    
 
         // The first panel
         panelOne = new JPanel();
@@ -145,8 +162,8 @@ public class MyFrame extends JFrame implements ActionListener{
         
         this.add(startButton);
         this.add(panelOne);
-        
-            
+        this.add(playAgainButton);  
+        this.add(continueButton);    
         
     }
 
@@ -186,7 +203,47 @@ public class MyFrame extends JFrame implements ActionListener{
                     "Invalid Input",
                     JOptionPane.ERROR_MESSAGE);
             }
-        }
+        }   else if (e.getSource() == playAgainButton) {
+           // Reset the game state
+            score = DEFAULT_SCORE;
+            maxAttempts = DEFAULT_MAX_ATTEMPTS;
+            userField.setText(""); // Clear the text field
+            submitButton.setEnabled(true); // Re-enable submit button
+            userField.setEditable(true); // Make text field editable again
+            randomGenerator.startNewGame(minNumber, maxNumber, maxAttempts); // Start a new game
+            hidePlayAgainButton(); // Hide the play again button
+
+            // Re-enable components for the new game
+            panelTwo.add(game_speech);
+            panelTwo.add(userField);
+            this.remove(panelOne);
+            this.remove(startButton);
+            this.add(exitButton);
+            this.add(submitButton);
+            this.add(panelTwo);
+            this.revalidate();
+            this.repaint();
+        }  else if (e.getSource() == continueButton) {
+        // Proceed to the next level
+        
+        submitButton.setEnabled(true); // Re-enable submit button
+        userField.setEditable(true); // Make text field editable again
+        maxAttempts += 4; // Increasing the attempts for the next level
+        randomGenerator.startNewGame(minNumber, maxNumber, maxAttempts); // Starts a new game with updated settings
+        hideContinueButton(); // Hide the continue button
+
+        // Re-enable components for the new game
+        panelTwo.add(game_speech);
+        panelTwo.add(userField);
+        this.remove(panelOne);
+        this.remove(startButton);
+        this.add(exitButton);
+        this.add(submitButton);
+        this.add(panelTwo);
+        this.revalidate();
+        this.repaint();
+    }
+        
     }
 
     public void setGameSpeech(String message) {
@@ -203,4 +260,38 @@ public class MyFrame extends JFrame implements ActionListener{
         String message = "<html>Your current score is: " + score + "</html>";
         game_speech.setText(message);
     }
+    
+    public void showPlayAgainButton() {
+       
+    playAgainButton.setVisible(true);
+    exitButton.setVisible(false);
+    submitButton.setVisible(false);
+    this.revalidate();
+    this.repaint();
+    }
+
+    public void hidePlayAgainButton() {
+    playAgainButton.setVisible(false);
+    exitButton.setVisible(true);
+    submitButton.setVisible(true);
+    this.revalidate();
+    this.repaint();
+    }
+
+    public void showContinueButton() {
+    continueButton.setVisible(true);
+    exitButton.setVisible(false);
+    submitButton.setVisible(false);
+    this.revalidate();
+    this.repaint();
+    }
+
+    public void hideContinueButton() {
+    continueButton.setVisible(false);
+    exitButton.setVisible(true);
+    submitButton.setVisible(true);
+    this.revalidate();
+    this.repaint();
+    }
+
 }

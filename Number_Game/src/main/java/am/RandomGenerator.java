@@ -18,7 +18,7 @@ class RandomGenerator {
         this.frame = frame;
     }
 
-  
+  //start
   public void startNewGame(int minNumber, int maxNumber, int maxAttempts) {
         // Set up a new game
         this.maxAttempts = maxAttempts;
@@ -31,22 +31,25 @@ class RandomGenerator {
         
         // Update the initial message
         String message = "<html>I'm thinking of a number between " + minNumber + " and " + maxNumber + "." +
-                         "<br><br>You have " + maxAttempts + " attempts to guess the number.</html>";
+                         "<br><br><span style='color:blue;'>You have "+ maxAttempts+ " attempts to guess the number.</span></html>";
         setMessage(message);
     }
+  
+  //logoi
     public void processUserGuess(int userGuess) {
-        if (userGuess == gameTargetNumber) {
+        if (userGuess == 10) {
             guessedCorrectly = true;
-            String message = "<html>Congratulations! 😁 You guessed the correct number!</html>";
+            String message = "<html><span style='color:green;'>Congratulations! 😁 You guessed the correct number!</span></html>";
             setMessage(message);
             frame.updateScore(10); // Update the score
+            frame.showContinueButton(); // Show the Continue button
         } else {
             userAttempts--;  // Decrement attempts
             if (userAttempts <= 0) {
-                String message = "<html>You've used all " + maxAttempts + " attempts. The number was " + gameTargetNumber + ".</html>";
+                String message = "<html><span style='color:red;'>You've used all " + maxAttempts + " attempts. The number was </span>" + gameTargetNumber + ".</html>";
                 setMessage(message);
-                // You may want to disable further input until the user decides to play again.
                 frame.endGame();
+                frame.showPlayAgainButton(); // Show Play Again button
             } else {
                 String hint = userGuess < gameTargetNumber ? "Too low!" : "Too high!";
                 String message = "<html>" + hint + " Try again ☹️. You have " + userAttempts + " attempts left.</html>";
