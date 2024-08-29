@@ -28,7 +28,14 @@ class GUI extends JFrame{
     
     public GUI(int numberOfSubjects){
         
-         JPanel inputPanel = new JPanel(new GridLayout(numberOfSubjects + 1, 2));
+         //Frame
+        this.setTitle("Grade Calculato");
+        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(500, 500);
+        this.setLayout(new BorderLayout());
+        
+        JPanel inputPanel = new JPanel(new GridLayout(numberOfSubjects + 1, 2));
         marksFields = new JTextField[numberOfSubjects];
         
         //loop to create inputPanel and marksFields based on the number Of Subjects
@@ -67,14 +74,6 @@ class GUI extends JFrame{
         this.add(inputPanel, BorderLayout.NORTH);
         this.add(resultsPanel, BorderLayout.CENTER);
         
-        //Frame
-        this.setTitle("Grade Calculato");
-        this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(500, 500);
-        this.setLayout(new BorderLayout());
-        this.setVisible(true);
-        
         //Action listener
         calculateButton.addActionListener(new ActionListener() {
             @Override
@@ -82,7 +81,7 @@ class GUI extends JFrame{
                 calculateResults(numberOfSubjects);
             }
         });
-        
+        this.setVisible(true);
     }
     
     //calculting result
