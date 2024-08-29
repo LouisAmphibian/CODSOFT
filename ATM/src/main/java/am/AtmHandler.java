@@ -35,7 +35,7 @@ class AtmHandler {
     }
     
     public double getBalance(){
-        return account.getBalance;
+        return account.getBalance();
     }
     
 }
