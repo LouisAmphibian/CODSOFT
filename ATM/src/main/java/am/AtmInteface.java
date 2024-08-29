@@ -4,12 +4,18 @@
  */
 package am;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
  *
@@ -17,6 +23,12 @@ import javax.swing.JFrame;
  */
 public class AtmInteface extends JFrame {
 
+    //fields
+    private JTextField inputField;
+    private JTextArea outputArea;
+    private AtmHandler atm;
+    
+    
     public AtmInteface() {
         this.setTitle("ATM");
         this.setResizable(false);
@@ -52,8 +64,8 @@ public class AtmInteface extends JFrame {
         //withdrawButton.setSize(150 , 50);
         gbc.gridx = 1; //Column 2
         gbc.gridy = 2; //Row 3
-        depositButton.setBackground(Color.BLUE);
-        depositButton.setForeground(Color.WHITE);
+        balanceButton.setBackground(Color.BLUE);
+        balanceButton.setForeground(Color.WHITE);
         this.add(balanceButton,gbc);
         
         JButton cancelButton = new JButton("Cancel");
@@ -63,7 +75,77 @@ public class AtmInteface extends JFrame {
         cancelButton.setForeground(Color.WHITE);
         this.add(cancelButton,gbc);
         
+        //output area
+        outputArea = new JTextArea();
+        outputArea.setEditable(false);
+        
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        gbc.fill = GridBagConstraints.BOTH; //allowing text area to area expand both direction
+        gbc.weightx = 1.0; //stretch
+        gbc.weighty = 1.0;
+        this.add(scrollPane, gbc);
+        
+        
+        //Action listeners
+        withdrawButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent e){
+                handleWithdraw();
+            }
+        });
+        
+        depositButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent e){
+                handleDeposit();
+            }
+        });
+        
+        balanceButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent e){
+                showBalance();
+            }
+        });
+        
+        withdrawButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent e){
+               System.exit(0);
+            }
+        });
+        
         this.setVisible(true);
     }
+    
+    //methods to handle the tasks
+    private void handleWithdraw(){
+        try{
+          double amount = Double.parseDouble(inputField.getText());
+          atm.withdraw(amount);
+          outputArea.setText("Withdrawal successful. New balance: " + atm.getBalance());
+        }catch(NumberFormatException e){
+           outputArea.setText("Invalid input. Please enter a numeric value."); 
+        }
+    }
+    
+    private void handleDeposit() {
+        try {
+            double amount = Double.parseDouble(inputField.getText());
+            atm.deposit(amount);
+            outputArea.setText("Deposit successful. New balance: " + atm.getBalance());
+        } catch (NumberFormatException e) {
+            outputArea.setText("Invalid input. Please enter a numeric value.");
+        }
+    }
+    
+    private void showBalance() {
+        outputArea.setText("Current balance: " + atm.getBalance());
+    }
+    
     
 }
