@@ -45,35 +45,55 @@ class GUI extends JFrame{
             inputPanel.add(marksFields[i]);
         }
         
+        
+     
+        
         //Calculate button
         JButton calculateButton = new JButton("Calculate");
-        inputPanel.add(calculateButton);
+        
+        //Reset button
+        JButton resetButton = new JButton("New Entry");
+
+        // Panel for buttons (Calculate and Reset)
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2)); // GridLayout with 1 row, 2 columns
+        buttonPanel.add(calculateButton);
+        buttonPanel.add(resetButton);
         
         //Panel to display result
         JPanel resultsPanel = new JPanel();
         resultsPanel.setBorder(BorderFactory.createTitledBorder("Results"));
         resultsPanel.setLayout(new GridLayout(3, 2));
         
-        //text field to display result
+        //text field to display result only
         totalField= new JTextField();
         totalField.setEditable(false); // Make the text field non-editable
-        resultsPanel.add(new JLabel("Total Marks: "));
-        resultsPanel.add(totalField);
-
+      
         averageField = new JTextField();
         averageField.setEditable(false); 
-        resultsPanel.add(new JLabel("Average Percentage: "));
-        resultsPanel.add(averageField);
-
+    
         gradeField = new JTextField();
         gradeField.setEditable(false); 
+        
+
+        //add to panel
+        resultsPanel.add(new JLabel("Total Marks: "));
+        resultsPanel.add(totalField);
+        
+        resultsPanel.add(new JLabel("Average Percentage: "));
+        resultsPanel.add(averageField);
+        
         resultsPanel.add(new JLabel("Grade: "));
         resultsPanel.add(gradeField);
+        
+         // Add button panel to input panel
+        inputPanel.add(new JLabel()); // Empty label to align buttons correctly
+        inputPanel.add(buttonPanel);
         
         //add to frame
         this.add(inputPanel, BorderLayout.NORTH);
         this.add(resultsPanel, BorderLayout.CENTER);
         
+    
         //Action listener
         calculateButton.addActionListener(new ActionListener() {
             @Override
@@ -81,6 +101,14 @@ class GUI extends JFrame{
                 calculateResults(numberOfSubjects);
             }
         });
+        
+         resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetFields(); // Clear the fields for new input
+            }
+        });
+        
         this.setVisible(true);
     }
     
@@ -123,5 +151,14 @@ class GUI extends JFrame{
         averageField.setText(String.format("%.2f%%", averagePercentage));
         gradeField.setText(grade);
       }
+      
+       private void resetFields() {
+        for (JTextField marksField : marksFields) {
+            marksField.setText(""); // Clear each input field
+        }
+        totalField.setText("");
+        averageField.setText("");
+        gradeField.setText("");
+    }
   
 }
