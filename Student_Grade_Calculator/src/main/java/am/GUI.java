@@ -44,10 +44,7 @@ class GUI extends JFrame{
             marksFields[i] = new JTextField();
             inputPanel.add(marksFields[i]);
         }
-        
-        
-     
-        
+   
         //Calculate button
         JButton calculateButton = new JButton("Calculate");
         
