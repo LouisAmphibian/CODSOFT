@@ -6,7 +6,7 @@ package am;
 
 /**
 t *
- * @author USER
+ * @author ayanda.m
  */
 public class ATM {
 
