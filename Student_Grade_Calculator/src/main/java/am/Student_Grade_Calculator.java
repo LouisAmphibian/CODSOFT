@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author USER
+ * @author ayanda.m
  */
 public class Student_Grade_Calculator {
 
