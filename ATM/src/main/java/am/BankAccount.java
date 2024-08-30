@@ -13,8 +13,8 @@ class BankAccount {
     private double balance;
     
     //Contructor 
-    public BankAccount(double balance){
-      balance = 0.0;  
+    public BankAccount(double initialBalance){
+      balance = initialBalance;  
     }
     
     //methods
